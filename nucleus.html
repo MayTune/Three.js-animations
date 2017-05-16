@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Nucleus</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000;
+				margin: 0px;
+				overflow: hidden;
+			}
+		</style>
+		</style>
+	</head>
+	<body>
+		<script src="js/three.js"></script>
+		<script src="js/tween.min.js"></script>
+		<script src="js/examples/js/controls/TrackballControls.js"></script>
+		<script src="js/examples/js/renderers/CSS3DRenderer.js"></script>
+
+		<div id="container"></div>
+
+		<script>
+			var camera, scene, renderer;
+			var controls;
+			var particlesTotal = 512;
+			var positions = [];
+			var objects = [];
+			var current = 0;
+			init();
+			animate();
+			function init() {
+				camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.set( 600, 400, 1500 );
+				camera.lookAt( new THREE.Vector3() );
+				scene = new THREE.Scene();
+				var image = document.createElement( 'img' );
+				image.addEventListener( 'load', function ( event ) {
+					for ( var i = 0; i < particlesTotal; i ++ ) {
+						var object = new THREE.CSS3DSprite( image.cloneNode() );
+					var radius = 750;
+					var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
+					var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
+						object.position.x = radius * Math.cos( theta ) * Math.sin( phi );
+						object.position.y = radius * Math.sin( theta ) * Math.sin( phi );
+						object.position.z = radius * Math.cos( phi );
+						scene.add( object );
+						objects.push( object );
+					}
+					
+				}, false );
+				image.src = 'js/sprite.png';
+				
+				
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.domElement.style.position = 'absolute';
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+				
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				
+				window.addEventListener( 'resize', onWindowResize, false );
+			}
+			function onWindowResize() 
+			{
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			
+			}
+
+			
+			
+			function animate() {
+				requestAnimationFrame( animate );
+				controls.update();
+				var time = performance.now();
+				for ( var i = 0, l = objects.length; i < l; i ++ ) {
+					var object = objects[ i ];
+					var scale = Math.sin( ( Math.floor( object.position.x ) + time ) * 0.002 ) * 0.3 + 1;
+					object.scale.set( scale, scale, scale );
+				}
+				renderer.render( scene, camera );
+			}
+		</script>
+	</body>
+</html>
