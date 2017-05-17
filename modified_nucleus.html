@@ -12,7 +12,7 @@
 				overflow: hidden;
 			}
 			#text{
-				margin-left:1200px;
+				margin-left:1000px;
 				margin-top:200px;
 			}
 		</style>
@@ -43,7 +43,7 @@
 			{
 			var atomicNumber=document.getElementById("AN").value;
 			var atomicMass=document.getElementById("AM").value;
-			
+			var scale1=5;
 			var particlesTotal=atomicMass;
 			var particlesTotal1 = atomicNumber;
 			var particlesTotal2 = atomicMass-atomicNumber;
@@ -53,6 +53,7 @@
 			init();
 			animate();
 			function init() {
+				var radius;
 				camera = new THREE.PerspectiveCamera( 75, window.innerWidth/2 / window.innerHeight, 1, 5000 );
 				camera.position.set( 600, 400, 1500 );
 				camera.lookAt( new THREE.Vector3() );
@@ -62,8 +63,20 @@
 				image.addEventListener( 'load', function ( event ) {
 					while(c1<particlesTotal1) {
 						var object = new THREE.CSS3DSprite( image.cloneNode() );
-					object.scale.set(5,5,5);
-					var radius = 5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					object.scale.set(scale1,scale1,scale1);
+
+					if(particlesTotal==1)
+					radius=scale1;
+					else if(particlesTotal1>=1&&particlesTotal1<5)
+					radius = 20*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal1>=5&&particlesTotal1<10)
+					radius = 8*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal1>=10&&particlesTotal1<25)
+					radius = 5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal1>=25&&particlesTotal1<70)
+					radius=3*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else
+					radius=1.5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
 					var phi = Math.acos( -1 + ( 2 * i ) / particlesTotal );
 					var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
 						object.position.x = radius * Math.cos( theta ) * Math.sin( phi );
@@ -80,8 +93,17 @@
 				image2.addEventListener( 'load', function ( event ) {
 					while(c2<particlesTotal2){
 						var object = new THREE.CSS3DSprite( image2.cloneNode() );
-					object.scale.set(5,5,5);
-					var radius = 5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					object.scale.set(scale1,scale1,scale1);
+					if(particlesTotal2>=1&&particlesTotal2<5)
+					radius = 20*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal2>=5&&particlesTotal2<10)
+					radius = 8*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal2>=10&&particlesTotal2<25)
+					radius = 5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else if(particlesTotal2>=25&&particlesTotal2<70)
+					radius=3*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
+					else
+					radius=1.5*(particlesTotal*(Math.exp(-(1/particlesTotal)))+particlesTotal);
 					var phi = Math.acos( -1 + ( 2 * j ) / particlesTotal );
 					var theta = Math.sqrt( particlesTotal * Math.PI ) * phi;
 						object.position.x = radius * Math.cos( theta ) * Math.sin( phi );
