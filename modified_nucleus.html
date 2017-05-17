@@ -28,9 +28,9 @@
 		
 		<div id="text">
 		<p style="color:blue;font-size:36px">Enter data</p>
-		<input type="number" id="AN"></input>
+		<input type="number" id="AN" placeholder="Atomic Number"></input>
 		<br><br>
-		<input type="number" id="AM"></input>
+		<input type="number" id="AM" placeholder="Atomic Mass"></input>
 		<br><br>
 		<button onclick="generate()">Click</button>
 		</div>
@@ -41,6 +41,7 @@
 			
 			function generate()
 			{
+			document.getElementById("container").innerHTML = "";
 			var atomicNumber=document.getElementById("AN").value;
 			var atomicMass=document.getElementById("AM").value;
 			var scale1=5;
@@ -88,7 +89,7 @@
 						c1++;
 					}
 					},false);
-				image.src = 'js/sprite1.png';
+				image.src = 'js/sprite0.png';
 				var image2 = document.createElement( 'img' );
 				image2.addEventListener( 'load', function ( event ) {
 					while(c2<particlesTotal2){
@@ -117,7 +118,7 @@
 					
 				}, false );
 				
-				image2.src = 'js/sprite0.png';
+				image2.src = 'js/sprite1.png';
 				
 				renderer = new THREE.CSS3DRenderer();
 				renderer.setSize( window.innerWidth/2, window.innerHeight);
